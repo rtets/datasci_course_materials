@@ -10,19 +10,13 @@ mr = MapReduce.MapReduce()
 def mapper(record):
     # key: document identifier
     # value: document contents
-    key = tuple(sorted(record))
-    value = record[0]
-    mr.emit_intermediate(key,value)
+    mr.emit_intermediate((record[0],record[1]),record[1])
+    mr.emit_intermediate((record[1],record[0]),record[1])
+
 
 def reducer(key, list_of_values):
     if len(list_of_values)<2:
         mr.emit((key[0],key[1]))
-        mr.emit((key[1],key[0]))
-    # if len(list_of_values)<2:
-    #     for p in key:
-    #         if p not in list_of_values:
-    #             mr.emit((p,list_of_values[0]))
-    #             break
 
 # Do not modify below this line
 # =============================
